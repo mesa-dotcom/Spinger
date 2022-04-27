@@ -1,3 +1,4 @@
+using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,7 @@ namespace Spinger
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseElectron(args);
                 });
     }
 }

@@ -1,3 +1,5 @@
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -70,6 +72,46 @@ namespace Spinger
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+            ElectronBootstrap();
+        }
+        public async void ElectronBootstrap()
+        {
+            BrowserWindowOptions options = new BrowserWindowOptions
+            {
+                Show = false
+            };
+            BrowserWindow mainWindow = await Electron.WindowManager.CreateWindowAsync();
+            mainWindow.OnReadyToShow += () =>
+            {
+                mainWindow.Show();
+            };
+            mainWindow.SetTitle("App Name here");
+
+            MenuItem[] menu = new MenuItem[]
+            {
+      new MenuItem
+      {
+          Label = "File",
+          Submenu=new MenuItem[]
+          {
+              new MenuItem
+              {
+                  Label ="Exit",
+                  Click =()=>{Electron.App.Exit();}
+              }
+          }
+      },
+      new MenuItem
+      {
+          Label = "Info",
+          Click = async ()=>
+          {
+              await Electron.Dialog.ShowMessageBoxAsync("Welcome to App");
+          }
+      }
+            };
+
+            Electron.Menu.SetApplicationMenu(menu);
         }
     }
 }
