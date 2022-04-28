@@ -20,9 +20,15 @@ namespace Spinger.Controllers
                 PingReply reply = pinger.Send(ip);
                 result.Ip = ip;
                 result.Status = reply.Status.ToString();
-                result.Ttl = reply.Options.Ttl;
                 result.Times = reply.RoundtripTime;
-                result.Buffer = reply.Buffer.Length;
+                if (reply.Options != null)
+                {
+                    result.Ttl = reply.Options.Ttl;
+                }
+                if (reply.Buffer != null)
+                {
+                    result.Buffer = reply.Buffer.Length;
+                }
                 return Ok(result);
             }
             catch (PingException)
