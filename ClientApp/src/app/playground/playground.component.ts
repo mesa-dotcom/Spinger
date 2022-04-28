@@ -16,7 +16,12 @@ export class PlaygroundComponent implements OnInit {
   constructor(private _pingService: PingService) { }
 
   ngOnInit() {
-    this.pingContinuously();
+  }
+
+  start() {
+    if (this.ipTest === '') { return; }
+    this.isPinging = true;
+    this.isContinuous ? this.pingContinuously() : this.pingNormally();
   }
 
   pingNormally() {

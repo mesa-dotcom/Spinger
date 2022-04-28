@@ -1,3 +1,31 @@
-<div *ngFor="let res of resultsDisplay">
-  {{ res.ip }} - {{ res.status }}
+<div class="card">
+  <div class="card-body">
+    <div class="card-title">Test Pinging</div>
+    <div class="card-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-1 col-lg-2 col-md-2">Test IP:</div>
+          <div class="col-lg-3 col-md-4">
+            <input type="text" [(ngModel)]="ipTest" />
+          </div>
+          <div class="col-2">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="continuously" [(ngModel)]="isContinuous">
+              <label class="custom-control-label" for="continuously">-t</label>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-4 d-flex flex-row-reverse">
+            <button *ngIf="!isPinging; else stopPinging" class="btn btn-primary" (click)="start()">Ping</button>
+            <ng-template #stopPinging>
+              <button class="btn btn-danger" (click)="stop()">Stop</button>
+            </ng-template>
+            <button class="btn btn-secondary mr-1" (click)="clear()">Clear</button>
+          </div>
+        </div>
+        <div class="row" *ngFor="let res of resultsDisplay">
+          {{ res.ip }} - {{ res.status }}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
