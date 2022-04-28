@@ -1,22 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
+using Spinger.Models;
 
 namespace Spinger.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[Action]")]
     [ApiController]
     public class PingController : ControllerBase
     {
         [HttpPost]
-        public IActionResult pingIp([FromBody]string ip)
+        public IActionResult PingIPAddress([FromBody]string ip)
         {
             Ping pinger = null;
+            PingResult result = new PingResult();
             try
             {
                 pinger = new Ping();
                 PingReply reply = pinger.Send(ip);
-                string result = "Ping to " + reply.Address.ToString() + " Successful" + " Response delay = " + reply.RoundtripTime.ToString() + " ms";
+                result.Ip = ip;
+                result.Status = reply.Status.ToString();
+                result.Ttl = reply.Options.Ttl;
+                result.Times = reply.RoundtripTime;
+                result.Buffer = reply.Buffer.Length;
                 return Ok(result);
             }
             catch (PingException)
@@ -30,7 +36,6 @@ namespace Spinger.Controllers
                     pinger.Dispose();
                 }
             }
-
         }
     }
 }
