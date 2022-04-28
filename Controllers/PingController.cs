@@ -23,7 +23,7 @@ namespace Spinger.Controllers
                 result.Ttl = reply.Options.Ttl;
                 result.Times = reply.RoundtripTime;
                 result.Buffer = reply.Buffer.Length;
-                return Ok(new { result = result });
+                return Ok(result);
             }
             catch (PingException)
             {

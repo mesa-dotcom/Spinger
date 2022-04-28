@@ -12,29 +12,31 @@ export class PlaygroundComponent implements OnInit {
   public isContinuous = false;
   public ipTest = '127.0.0.1';
   public resultSubscription: Subscription = new Subscription();
-  public resultsDisplay: string[] = [];
+  public resultsDisplay: any[] = [];
   constructor(private _pingService: PingService) { }
 
   ngOnInit() {
+    this.pingContinuously();
   }
 
   pingNormally() {
-    // this.resultSubscription = this._pingService.pingRepeat(this.ipTest).subscribe({
-    //   next: (res: any) => {
-    //     this.resultsDisplay.push(res.display);
-    //   },
-    //   complete: () => {
-    //     this.isPinging = false;
-    //   },
-    // });
+    this.resultSubscription = this._pingService.pingIpAddressRepeat(this.ipTest).subscribe({
+      next: (res: any) => {
+        this.resultsDisplay.push(res);
+      },
+      complete: () => {
+        this.isPinging = false;
+      },
+    });
   }
 
   pingContinuously() {
-    // this.resultSubscription = this._pingService
-    //   .pingContinuously(this.ipTest)
-    //   .subscribe((x: any) => {
-    //     this.resultsDisplay.push(x.display);
-    //   });
+    this.resultSubscription = this._pingService
+      .pingIpAddressContinuously(this.ipTest)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.resultsDisplay.push(res);
+      });
   }
 
   stop() {

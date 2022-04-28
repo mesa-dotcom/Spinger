@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { concatMap, interval, repeat } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,14 @@ export class PingService {
   }
 
   public pingIpAddressRepeat(ipAddress: string) {
-    return this.http.post(`${this.baseUrl}Ping/PingIPAddress`, JSON.stringify(ipAddress), this.httpOptions);
+    return this.http.post(`${this.baseUrl}Ping/PingIPAddress`, JSON.stringify(ipAddress), this.httpOptions).pipe(
+      repeat(4)
+    );
+  }
+
+  public pingIpAddressContinuously(ipAddress: string) {
+    return interval(1000).pipe(
+      concatMap(() => this.http.post(`${this.baseUrl}Ping/PingIPAddress`, JSON.stringify(ipAddress), this.httpOptions))
+    );
   }
 }
