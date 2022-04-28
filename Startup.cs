@@ -85,7 +85,7 @@ namespace Spinger
             {
                 mainWindow.Show();
             };
-            mainWindow.SetTitle("App Name here");
+            mainWindow.SetTitle("Spinger");
 
             MenuItem[] menu = new MenuItem[]
             {
